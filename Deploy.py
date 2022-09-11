@@ -1,7 +1,7 @@
 import pickle
 import streamlit as st
 from sklearn.feature_extraction.text import TfidfVectorizer
-
+import re
 header = st.container()
 features = st.container()
 
@@ -11,6 +11,12 @@ ivec = "vector.sav"
 model= pickle.load(open(imodel, 'rb'))
 vec= pickle.load(open(ivec, 'rb'))
 
+def clean_m(x):
+    x = x.strip().lower()
+    x = re.sub('\(.+\)','',x)
+    x = re.sub('\\n', '', x)
+    x = re.sub('[^1-9a-zA-Z ]', '', x)
+    return x
 
 
 with header:
@@ -19,6 +25,7 @@ with header:
 
 with features:
     txt = st.text_area('Enter your content')
+    txt= clean_m(txt)
     data = vec.transform([txt])
     result = model.predict(data).tolist()[0]
     if result ==1:
