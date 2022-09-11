@@ -2,8 +2,8 @@ import pickle
 import streamlit as st
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-features = st.container()
 header = st.container()
+features = st.container()
 
 imodel = "model_a.sav"
 ivec = "vector.sav"
@@ -21,5 +21,9 @@ with features:
     txt = st.text_area('Enter your content')
     data = vec.transform([txt])
     result = model.predict(data).tolist()[0]
+    if result ==1:
+        result = 'Real'
+    else:
+        result='Fake'
     st.write('Result:', result)
 
